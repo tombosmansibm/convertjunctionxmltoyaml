@@ -44,12 +44,10 @@ mapping_table = {
 #functions
 def f_servers(_isamservers=[], _index=0, _isamkey=None, _isamvalue=None):
     # the syntax here is server.
-    # every element will have multiple elements (i hope sorted correctly) when there's multiple elements
-    # TODO: the logic here is flawed in the sense that if there's more than 1 server, it will depend on the order in the junction.xml if it works or not
+    # every individual element will have multiple elements (i hope sorted correctly) when there's multiple servers
     if _isamvalue is None:
         return _isamservers
     elif isinstance(_isamvalue , list):
-        print("isamvalue is a list")
         for i, val in enumerate(_isamvalue):
             if not val is None:
                 if len(_isamservers) > i:

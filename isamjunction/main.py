@@ -11,7 +11,7 @@ junctiondir = filedialog.askdirectory(mustexist=True)
 
 if junctiondir is not None and len(junctiondir) > 0:
     for junctionfilepath in os.listdir(junctiondir):
-        print(junctiondir+"/"+junctionfilepath)
+        print("\n\nOpening file " + junctiondir + "/" + junctionfilepath)
         f_processJunction(junctiondir+"/"+junctionfilepath)
 
 
