@@ -66,12 +66,3 @@ MUTAUTHCERTLABEL  #  key_label: "key1_certificate"                             #
 #                  sms_environment: vhostA.example.com                   # Only applicable for virtual junctions. Specifies the replica set that sessions on the virtual junction are managed under. The replica set also provides the ability to group or separate log in sessions among multiple virtual hosts. If this option is not used to specify the replica set, the virtual host junction is automatically assigned to a replica set matching its virtual host name. For example, if the virtual host name is vhostA.example.com, the replica set is named vhostA.example.com. The replica set used for the virtual host junction must be present in the [replica-sets] stanza of the Reverse Proxy configuration file. This option cannot be used in a non-DSC environment.
 #                  local_ip: "192.168.42.1"                              # Specifies the local IP address that the Reverse Proxy uses when the system communicates with the target back-end server. If this option is not provided, the Reverse Proxy uses the default address as determined by the operating system. If you supply an address for a particular junction, the Reverse Proxy is modified to bind to this local address for all communication with the junctioned server.
 #                  server_port: 443
-
-import base64
-
-base64_message = 'UHl0aG9uIGlzIGZ1bg=='
-base64_bytes = base64_message.encode('ascii')
-message_bytes = base64.b64decode(base64_bytes)
-message = message_bytes.decode('ascii')
-
-print(message)
