@@ -155,8 +155,8 @@ def f_processJunction(junctionfile):
                     print(usernamepassword)
                     theuser = usernamepassword.split("\n")[0]
                     thepw = usernamepassword.split("\n")[1][:-1]  #this is to remove the strange ^ Q character
-                    print("user:" + theuser + ", password: "+thepw)
-                    outf.write("user: " + theuser + "\n")
+                    print("username:" + theuser + ", password: "+thepw)
+                    outf.write("username: " + theuser + "\n")
                     outf.write("password: " + thepw.strip() + "\n")
                 elif jsonvarsinglevalue is not None and jsonvarsinglevalue:
                 #elif junctionvars in ['MUTAUTHCERT', 'TRANSPARENTPATH', 'TFIMJCTSSO', 'STATEFUL', 'SESSIONCOOKIE']:
