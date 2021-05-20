@@ -27,6 +27,7 @@ mapping_table = {
     "SCRIPTCOOKIE": {"name": "scripting_support", "boolean": True},
     "REMOTEADDRESS": {"name": "client_ip_http", "boolean": True},
     "COOKIENAMEINCLUDEPATH": {"name": "cookie_include_path", "boolean": True},
+    "PRESERVECOOKIENAMES": {"name": "preserve_cookie", "boolean": True},
     "HOST": {"name": "servers.server_hostname"},
     "VIRTHOSTNM": {"name": "servers.virtual_hostname"},
     "PORT": {"name": "servers.server_port"},

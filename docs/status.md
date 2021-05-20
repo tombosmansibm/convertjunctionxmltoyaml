@@ -32,9 +32,8 @@ Mappings in lib.py that are implemented between the REST API and the XML format.
   FSSOCONFFILE: fsso_config_file: "fsso.file"                             # The name of the configuration file that is used for forms based single sign-on.
   REMOTEADDRESS: client_ip_http: "no"                                      # Specifies whether to insert the IP address of the incoming request into an HTTP header for transmission to the junctioned Web server. Valid value is "yes" or "no".
   COOKIENAMEINCLUDEPATH: cookie_include_path
-
+  PRESERVECOOKIENAMES: preserve_cookie
 ## unknown
-
 SCRIPTCOOKIETRAILER:  ???? junction_cookie_javascript_block: "inhead"                # Controls the junction cookie JavaScript block. The value should be one of: trailer, inhead, onfocus, xhtml10. Use trailer to append the junction cookie JavaScript to HTML page returned from back-end server. Use inhead to insert the JavaScript block between tags for HTML 4.01 compliance. Use onfocus to use the onfocus event handler in the JavaScript to ensure the correct junction cookie is used in a multiple-junction/multiple-browser-window scenario. Use xhtml10 to insert a JavaScript block that is HTML 4.01 and XHTML 1.0 compliant.
 
 ## COMPLEX mapping
