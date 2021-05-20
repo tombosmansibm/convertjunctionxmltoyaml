@@ -37,7 +37,7 @@ mapping_table = {
     "URLQC": {"name": "servers.query_contents"},
     "LOCALADDRESS": {"name": "servers.local_ip"},
     "UUID": {"name": "servers.server_uuid"},
-    "CASEINS": {"name": "servers.case_sensitive_url", "boolean": True}
+    "CASEINS": {"name": "servers.case_sensitive_url", "boolean": True},
     "WIN32SUP": {"name": "servers.windows_style_url", "boolean": True}
 }
 
@@ -124,6 +124,14 @@ def f_processJunction(junctionfile):
                 elif junctionvars == 'VIRTUALHOSTJCT':
                     #add virtual_hostname
                     outf.write("virtual_hostname: " + junction[1].get('VIRTHOSTNM') + "\n")
+                elif junctionvars == 'SCRIPTCOOKIE':
+                    outf.write(jsonvarn + ": yes\n")
+                    #write out the type.  junction_cookie_javascript_block
+                    for k in junction[1]:
+                        if k.startswith('SCRIPTCOOKIE'):
+                            cookieparam = k.replace('SCRIPTCOOKIE','')
+                            if cookieparam != '':
+                                outf.write("junction_cookie_javascript_block: " + cookieparam.lower() + "\n")
                 elif junctionvars == 'CLIENTID':
                     #insert_all
                     #insert_pass_usgrcr
@@ -167,8 +175,7 @@ def f_processJunction(junctionfile):
                     outf.write("username: " + theuser + "\n")
                     outf.write("password: " + thepw.strip() + "\n")
                 elif jsonvarsinglevalue is not None and jsonvarsinglevalue:
-                #elif junctionvars in ['MUTAUTHCERT', 'TRANSPARENTPATH', 'TFIMJCTSSO', 'STATEFUL', 'SESSIONCOOKIE']:
-                    # variables that are just present
+                    # variables that are just present, and hence are True
                     outf.write(jsonvarn + ": yes\n")
                 else:
                     if junction[1][junctionvars] is not None:
