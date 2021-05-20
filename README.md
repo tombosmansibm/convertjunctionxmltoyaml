@@ -14,4 +14,4 @@ To do
 -------
 - so far , the output yaml file is not tested yet (not deployed yet)
 - logic for the http/https ports needs to be verified
-- a lot of fields are ignored at this time
+- most fields are covered, but still some missing (eg. LTPA)
