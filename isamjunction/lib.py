@@ -9,6 +9,7 @@ mapping_table = {
     "NAME": {"name": "junction_point"},
     "JUCTYPE": {"name": "junction_type"},
     "TRANSPARENTPATH": {"name": "transparent_path_junction", "boolean": True},
+    "VIRTUALHOSTJCT": {"name": "virtual_hostname"},
     "STATEFUL": {"name": "stateful_junction", "boolean": True},
     "BASICAUTH": {"name": "basic_auth_mode", "boolean": True},
     "HARDLIMIT": {"name": "junction_hard_limit"},
@@ -31,6 +32,7 @@ mapping_table = {
     "URLQC": {"name": "servers.query_contents"},
     "LOCALADDRESS": {"name": "servers.local_ip"},
     "UUID": {"name": "servers.server_uuid"}
+
 }
 
 #functions
@@ -114,6 +116,9 @@ def f_processJunction(junctionfile):
                 if jsonvarn.startswith("servers."):
                     isamservers = f_servers(isamservers, 0, jsonvarn[jsonvarn.rfind(".") + 1:],
                                             junction[1][junctionvars])
+                elif junctionvars == 'VIRTUALHOSTJCT":
+                    #add virtual_hostname
+                    outf.write("virtual_hostname: " + junction[1].get('VIRTHOSTNM') + "\n")
                 elif junctionvars == 'CLIENTID':
                     #insert_all
                     #insert_pass_usgrcr
@@ -132,7 +137,6 @@ def f_processJunction(junctionfile):
                         outf.write("  - all\n")
                     else:
                         #look at the end of the string, it indicates user, group and/or cred
-
                         cred = junction[1][junctionvars].split("_")[-1]
                         #print("> cred:" +cred)
                         cred = [cred[i:i + 2] for i in range(0, len(cred), 2)]

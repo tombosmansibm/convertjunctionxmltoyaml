@@ -13,7 +13,7 @@ Mappings in lib.py that are implemented between the REST API and the XML format.
   REQUESTENCODING: request_encoding  # Specifies the encoding to use when the system generates HTTP headers for junctions. Possible values for encoding are: utf8_bin, utf8_uri, lcp_bin, and lcp_uri.
   CLIENTID:  remote_http_header                                      # Controls the insertion of Security Verify Access specific client identity information in HTTP headers across the junction. The value is an array containing a combination of: iv-user, iv-user-l, iv-groups, iv-creds or all. Note: This is an array of elements.
   HOST: servers.server_hostname
-  VIRTHOSTNM: servers.virtual_hostname
+
   PORT: servers.server_port   # not sure
   SERVERDN: servers.server_dn
   URLQC: servers.query_contents
@@ -31,15 +31,15 @@ Mappings in lib.py that are implemented between the REST API and the XML format.
   SCRIPTCOOKIE: (yes/no) scripting_support                                 # Supplies junction identification in a cookie to handle script-generated server-relative URLs.
   FSSOCONFFILE: fsso_config_file: "fsso.file"                             # The name of the configuration file that is used for forms based single sign-on.
 ## unknown
-VIRTUALHOSTJCT:
+
 SCRIPTCOOKIETRAILER:  ???? junction_cookie_javascript_block: "inhead"                # Controls the junction cookie JavaScript block. The value should be one of: trailer, inhead, onfocus, xhtml10. Use trailer to append the junction cookie JavaScript to HTML page returned from back-end server. Use inhead to insert the JavaScript block between tags for HTML 4.01 compliance. Use onfocus to use the onfocus event handler in the JavaScript to ensure the correct junction cookie is used in a multiple-junction/multiple-browser-window scenario. Use xhtml10 to insert a JavaScript block that is HTML 4.01 and XHTML 1.0 compliant.
 
 ## COMPLEX mapping
   MUTAUTHBAUP: username + password , BA
   #  username: "user1"                                         # The Reverse Proxy user name. Used to send BA header information to the back-end server.
   #  password: "'{{ '{{' }} user1_password {{ '}}' }}'"        # The Reverse Proxy password. Used to send BA header information to the back-end server.
-                                 
-
+VIRTUALHOSTJCT: (yes/no)         virtual_hostname  / virtual_https_hostname    -> based on jct_type 
+  VIRTHOSTNM: servers.virtual_hostname / servers.virtual_https_hostname  -> based on jct_type
 ## TODO
 insert_ltpa_cookies: "yes"                                # Controls whether LTPA cookies are passed to the junctioned Web server. Valid value is "yes" or "no".
 version_two_cookies: "yes"                                # Specifies whether LTPA version 2 cookies (LtpaToken2) are used. Valid value is "yes" or "no".
