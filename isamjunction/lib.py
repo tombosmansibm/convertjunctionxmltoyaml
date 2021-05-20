@@ -4,29 +4,33 @@ import tempfile
 
 #variables/constants
 # junction mapping between xml format and json format
+#['MUTAUTHCERT', 'TRANSPARENTPATH', 'TFIMJCTSSO', 'STATEFUL', 'SESSIONCOOKIE']:
 mapping_table = {
-    "NAME": "junction_point",
-    "JUCTYPE": "junction_type",
-    "TRANSPARENTPATH": "transparent_path_junction",
-    "STATEFUL": "stateful_junction",
-    "BASICAUTH": "basic_auth_mode",
-    "HARDLIMIT": "junction_hard_limit",
-    "SOFTLIMIT": "junction_soft_limit",
-    "SESSIONCOOKIE": "insert_session_cookies",
-    "REQUESTENCODING": "request_encoding",
-    "TFIMJCTSSO": "tfim_sso",
-    "MUTAUTHBA": "enable_basic_auth",
-    "MUTAUTHBAUP": "username+password",
-    "MUTAUTHCERT": "mutual_auth",
-    "MUTAUTHCERTLABEL": "key_label",
-    "CLIENTID": "remote_http_header",
-    "HOST": "servers.server_hostname",
-    "VIRTHOSTNM": "servers.virtual_hostname",
-    "PORT": "servers.server_port",
-    "SERVERDN": "servers.server_dn",
-    "URLQC": "servers.query_contents",
-    "LOCALADDRESS": "servers.local_ip",
-    "UUID": "servers.server_uuid"
+    "NAME": {"name": "junction_point"},
+    "JUCTYPE": {"name": "junction_type"},
+    "TRANSPARENTPATH": {"name": "transparent_path_junction", "boolean": True},
+    "STATEFUL": {"name": "stateful_junction", "boolean": True},
+    "BASICAUTH": {"name": "basic_auth_mode", "boolean": True},
+    "HARDLIMIT": {"name": "junction_hard_limit"},
+    "SOFTLIMIT": {"name": "junction_soft_limit"},
+    "SESSIONCOOKIE": {"name": "insert_session_cookies", "boolean": True},
+    "REQUESTENCODING": {"name": "request_encoding"},
+    "TFIMJCTSSO": {"name": "tfim_sso", "boolean": True},
+    "MUTAUTHBA": {"name": "enable_basic_auth", "boolean": True},
+    "MUTAUTHBAUP": {"name": "username+password"},
+    "MUTAUTHCERT": {"name": "mutual_auth", "boolean": True},
+    "MUTAUTHCERTLABEL": {"name": "key_label"},
+    "CLIENTID": {"name": "remote_http_header"},
+    "GSOTARGET": {"name": "gso_resource_group"},
+    "FSSOCONFFILE": {"name": "fsso_config_file"},
+    "SCRIPTCOOKIE": {"name": "scripting_support", "boolean": True},
+    "HOST": {"name": "servers.server_hostname"},
+    "VIRTHOSTNM": {"name": "servers.virtual_hostname"},
+    "PORT": {"name": "servers.server_port"},
+    "SERVERDN": {"name": "servers.server_dn"},
+    "URLQC": {"name": "servers.query_contents"},
+    "LOCALADDRESS": {"name": "servers.local_ip"},
+    "UUID": {"name": "servers.server_uuid"}
 }
 
 #functions
@@ -67,6 +71,13 @@ def f_processJunction(junctionfile):
         return
     junction_name = decodeBase64(base64_message)
 
+    if not junction_name.startswith("/"):
+        junction_name = "/"+junction_name
+    if junction_name.find("/",1) >= 0:
+        # replace / with something else to write the file
+        junction_name = junction_name.replace("/","_")
+        junction_name = junction_name.replace("_","/",1)
+
     print("===========\n"+junction_name+"\n===========\n")
 
     with open(junctionfile) as fd:
@@ -79,6 +90,7 @@ def f_processJunction(junctionfile):
 
     # open a file for writing
     outfilename = tempfile.gettempdir() + junction_name + ".yaml"
+
     outf = open(outfilename, "w", encoding='iso-8859-1')
     outf.writelines("---\n")
     for junction in doc.items():
@@ -87,27 +99,40 @@ def f_processJunction(junctionfile):
         #print('Number of elements: ' + str(len(junction)))
         isamservers = []
         for junctionvars in junction[1]:
-            jsonvarn = mapping_table.get(junctionvars)
+            print(junctionvars)
+            jsonvars = mapping_table.get(junctionvars)
+            print(jsonvars)
+            # return an object
+            if jsonvars is not None:
+                jsonvarn = jsonvars.get('name')
+                jsonvarsinglevalue = jsonvars.get('boolean')
+            else:
+                jsonvarn = None
+                jsonvarsinglevalue = False
             #if jsonvarn is not None and junction[1][junctionvars] is not None:
             if jsonvarn is not None:
                 if jsonvarn.startswith("servers."):
                     isamservers = f_servers(isamservers, 0, jsonvarn[jsonvarn.rfind(".") + 1:],
                                             junction[1][junctionvars])
-                elif junctionvars == 'MUTAUTHBA':
-                    # BASICAUTH MUTUAL
-                    print("> Mutual auth ba")
-                    outf.write(jsonvarn + ": true\n")
                 elif junctionvars == 'CLIENTID':
                     #insert_all
                     #insert_pass_usgrcr
                     #do not insert
+                    # also, user and groups are seperate entries
                     if junction[1][junctionvars] == 'do not insert':
                         print(">don't insert header")
+                    elif junction[1][junctionvars] == 'user':
+                        outf.write(jsonvarn+":\n")
+                        outf.write("  - iv_user\n")
+                    elif junction[1][junctionvars] == 'groups':
+                        outf.write(jsonvarn+":\n")
+                        outf.write("  - iv_group\n")
                     elif junction[1][junctionvars] == 'insert_all':
                         outf.write(jsonvarn+":\n")
                         outf.write("  - all\n")
                     else:
                         #look at the end of the string, it indicates user, group and/or cred
+
                         cred = junction[1][junctionvars].split("_")[-1]
                         #print("> cred:" +cred)
                         cred = [cred[i:i + 2] for i in range(0, len(cred), 2)]
@@ -130,7 +155,8 @@ def f_processJunction(junctionfile):
                     print("user:" + theuser + ", password: "+thepw)
                     outf.write("user: " + theuser + "\n")
                     outf.write("password: " + thepw.strip() + "\n")
-                elif junctionvars in ['MUTAUTHCERT', 'TRANSPARENTPATH', 'TFIMJCTSSO', 'STATEFUL', 'SESSIONCOOKIE']:
+                elif jsonvarsinglevalue is not None and jsonvarsinglevalue:
+                #elif junctionvars in ['MUTAUTHCERT', 'TRANSPARENTPATH', 'TFIMJCTSSO', 'STATEFUL', 'SESSIONCOOKIE']:
                     # variables that are just present
                     outf.write(jsonvarn + ": yes\n")
                 else:
