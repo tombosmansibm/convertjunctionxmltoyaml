@@ -28,6 +28,7 @@ mapping_table = {
     "REMOTEADDRESS": {"name": "client_ip_http", "boolean": True},
     "COOKIENAMEINCLUDEPATH": {"name": "cookie_include_path", "boolean": True},
     "PRESERVECOOKIENAMES": {"name": "preserve_cookie", "boolean": True},
+    "JCTHTTP2": {"name": "http2_junction", "boolean": True},
     "HOST": {"name": "servers.server_hostname"},
     "VIRTHOSTNM": {"name": "servers.virtual_hostname"},
     "PORT": {"name": "servers.server_port"},
