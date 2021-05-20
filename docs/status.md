@@ -34,22 +34,26 @@ Mappings in lib.py that are implemented between the REST API and the XML format.
   COOKIENAMEINCLUDEPATH: cookie_include_path
   PRESERVECOOKIENAMES: preserve_cookie
   JCTHTTP2: http2_junction: "no"                                      # Specifies whether the junction supports the HTTP/2 protocol. By default, junctions do not support the HTTP/2 protocol. A valid value is "yes" or "no".
-
+  CASEINS: servers.case_sensitive_url: 'no'
+  RULEREASON: authz_rules: "yes"                                        # Specifies whether to allow denied requests and failure reason information from authorization rules to be sent in the Boolean Rule header (AM_AZN_FAILURE) across the junction. Valid value is "yes" or "no".
+  WIN32SUP: servers.windows_style_url: 'no'
 ## unknown
-SCRIPTCOOKIETRAILER:  ???? junction_cookie_javascript_block: "inhead"                # Controls the junction cookie JavaScript block. The value should be one of: trailer, inhead, onfocus, xhtml10. Use trailer to append the junction cookie JavaScript to HTML page returned from back-end server. Use inhead to insert the JavaScript block between tags for HTML 4.01 compliance. Use onfocus to use the onfocus event handler in the JavaScript to ensure the correct junction cookie is used in a multiple-junction/multiple-browser-window scenario. Use xhtml10 to insert a JavaScript block that is HTML 4.01 and XHTML 1.0 compliant.
 
 ## COMPLEX mapping
   MUTAUTHBAUP: username + password , BA
   #  username: "user1"                                         # The Reverse Proxy user name. Used to send BA header information to the back-end server.
   #  password: "'{{ '{{' }} user1_password {{ '}}' }}'"        # The Reverse Proxy password. Used to send BA header information to the back-end server.
-VIRTUALHOSTJCT: (yes/no)         virtual_hostname  / virtual_https_hostname    -> based on jct_type 
+  VIRTUALHOSTJCT: (yes/no)         virtual_hostname  / virtual_https_hostname    -> based on jct_type 
   VIRTHOSTNM: servers.virtual_hostname / servers.virtual_https_hostname  -> based on jct_type
+  #junction cookie
+  SCRIPTCOOKIE
+  SCRIPTCOOKIETRAILER:  ???? junction_cookie_javascript_block: "inhead"                # Controls the junction cookie JavaScript block. The value should be one of: trailer, inhead, onfocus, xhtml10. Use trailer to append the junction cookie JavaScript to HTML page returned from back-end server. Use inhead to insert the JavaScript block between tags for HTML 4.01 compliance. Use onfocus to use the onfocus event handler in the JavaScript to ensure the correct junction cookie is used in a multiple-junction/multiple-browser-window scenario. Use xhtml10 to insert a JavaScript block that is HTML 4.01 and XHTML 1.0 compliant.
+  SCRIPTCOOKIEHEAD
 ## TODO
 insert_ltpa_cookies: "yes"                                # Controls whether LTPA cookies are passed to the junctioned Web server. Valid value is "yes" or "no".
 version_two_cookies: "yes"                                # Specifies whether LTPA version 2 cookies (LtpaToken2) are used. Valid value is "yes" or "no".
 ltpa_keyfile_password: "'{{ '{{' }} ltpa_pwd {{ '}}' }}'" # Password for the key file that is used to encrypt LTPA cookie data.
 ltpa_keyfile: "ltpafile.key"                              # Location of the key file that is used to encrypt the LTPA cookie data.
-authz_rules: "yes"                                        # Specifies whether to allow denied requests and failure reason information from authorization rules to be sent in the Boolean Rule header (AM_AZN_FAILURE) across the junction. Valid value is "yes" or "no".
 delegation_support: "yes"                                 # This option is valid only with junctions that were created with the type of ssl or sslproxy. Indicates single sign-on from a front-end Reverse Proxy server to a back-end Reverse Proxy server.
 http2_proxy: "no"                                         # Specifies whether the junction proxy support the HTTP/2 protocol. By default, junction proxies do not support the HTTP/2 protocol. A valid value is "yes" or "no".
 sni_name: "iexist.example.com"                            # The server name indicator (SNI) to send to TLS junction servers. By default, no SNI is sent. Any valid DNS name is permitted.
@@ -63,8 +67,8 @@ sni_name: "iexist.example.com"                            # The server name indi
 #                - server_hostname: "server2.example.com"
 #                  server_dn: "CN=server2.example.com"                   # Specifies the distinguished name of the junctioned Web server.
 #                  virtual_https_hostname: "idontexist.com:444"          # Virtual HTTPS host name that is used for the junctioned Web server. Optional: Add virtual host https port [:port] to be used.
-->                  case_sensitive_url: 'no'
-->                  windows_style_url: 'no'
+#                  case_sensitive_url: 'no'
+                   windows_style_url: 'no'
 ->                  vhost_label: "label2"                                 # Only applicable for virtual junctions. Causes a second virtual junction to share the protected object space with the initial virtual junction. This option is appropriate for junction pairs only (2 junctions with complementary protocols). The option does not support the association of more than 2 junctions.
 #                  server_uuid: server2_uuid                             # Specifies the UUID that will be used to identify the junctioned Web server. This field is used for stateful junctions.
 ->                  proxy_hostname: proxy.ibm.com                         # The DNS host name or IP address of the proxy server. Applicable when the junction type is sslproxy.

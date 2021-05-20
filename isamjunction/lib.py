@@ -29,13 +29,16 @@ mapping_table = {
     "COOKIENAMEINCLUDEPATH": {"name": "cookie_include_path", "boolean": True},
     "PRESERVECOOKIENAMES": {"name": "preserve_cookie", "boolean": True},
     "JCTHTTP2": {"name": "http2_junction", "boolean": True},
+    "RULEREASON": {"name": "authz_rules", "boolean": True},
     "HOST": {"name": "servers.server_hostname"},
     "VIRTHOSTNM": {"name": "servers.virtual_hostname"},
     "PORT": {"name": "servers.server_port"},
     "SERVERDN": {"name": "servers.server_dn"},
     "URLQC": {"name": "servers.query_contents"},
     "LOCALADDRESS": {"name": "servers.local_ip"},
-    "UUID": {"name": "servers.server_uuid"}
+    "UUID": {"name": "servers.server_uuid"},
+    "CASEINS": {"name": "servers.case_sensitive_url", "boolean": True}
+    "WIN32SUP": {"name": "servers.windows_style_url", "boolean": True}
 }
 
 #functions
