@@ -25,6 +25,8 @@ mapping_table = {
     "GSOTARGET": {"name": "gso_resource_group"},
     "FSSOCONFFILE": {"name": "fsso_config_file"},
     "SCRIPTCOOKIE": {"name": "scripting_support", "boolean": True},
+    "REMOTEADDRESS": {"name": "client_ip_http", "boolean": True},
+    "COOKIENAMEINCLUDEPATH": {"name": "cookie_include_path", "boolean": True},
     "HOST": {"name": "servers.server_hostname"},
     "VIRTHOSTNM": {"name": "servers.virtual_hostname"},
     "PORT": {"name": "servers.server_port"},
@@ -32,7 +34,6 @@ mapping_table = {
     "URLQC": {"name": "servers.query_contents"},
     "LOCALADDRESS": {"name": "servers.local_ip"},
     "UUID": {"name": "servers.server_uuid"}
-
 }
 
 #functions
@@ -130,12 +131,12 @@ def f_processJunction(junctionfile):
                         outf.write("  - iv_user\n")
                     elif junction[1][junctionvars] == 'groups':
                         outf.write(jsonvarn+":\n")
-                        outf.write("  - iv_group\n")
+                        outf.write("  - iv_groups\n")
                     elif junction[1][junctionvars] == 'insert_all':
                         outf.write(jsonvarn+":\n")
                         outf.write("  - all\n")
                     else:
-                        #look at the end of the string, it indicates user, group and/or cred
+                        #look at the end of the string, it indicates user, groups, iv-user-l and/or cred
                         cred = junction[1][junctionvars].split("_")[-1]
                         #print("> cred:" +cred)
                         cred = [cred[i:i + 2] for i in range(0, len(cred), 2)]
@@ -144,8 +145,10 @@ def f_processJunction(junctionfile):
                         for val in cred:
                             if val == 'us':
                                 outf.write('  - "iv-user"\n')
+                            elif val == 'ln':
+                                outf.write('  - "iv-user-l"\n')
                             elif val == 'gr':
-                                outf.write('  - "iv-group"\n')
+                                outf.write('  - "iv-groups"\n')
                             elif val == 'cr':
                                 outf.write('  - "iv-cred"\n')
                 elif junctionvars =='MUTAUTHBAUP':

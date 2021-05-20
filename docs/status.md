@@ -30,6 +30,9 @@ Mappings in lib.py that are implemented between the REST API and the XML format.
 
   SCRIPTCOOKIE: (yes/no) scripting_support                                 # Supplies junction identification in a cookie to handle script-generated server-relative URLs.
   FSSOCONFFILE: fsso_config_file: "fsso.file"                             # The name of the configuration file that is used for forms based single sign-on.
+  REMOTEADDRESS: client_ip_http: "no"                                      # Specifies whether to insert the IP address of the incoming request into an HTTP header for transmission to the junctioned Web server. Valid value is "yes" or "no".
+  COOKIENAMEINCLUDEPATH: cookie_include_path
+
 ## unknown
 
 SCRIPTCOOKIETRAILER:  ???? junction_cookie_javascript_block: "inhead"                # Controls the junction cookie JavaScript block. The value should be one of: trailer, inhead, onfocus, xhtml10. Use trailer to append the junction cookie JavaScript to HTML page returned from back-end server. Use inhead to insert the JavaScript block between tags for HTML 4.01 compliance. Use onfocus to use the onfocus event handler in the JavaScript to ensure the correct junction cookie is used in a multiple-junction/multiple-browser-window scenario. Use xhtml10 to insert a JavaScript block that is HTML 4.01 and XHTML 1.0 compliant.
@@ -45,7 +48,6 @@ insert_ltpa_cookies: "yes"                                # Controls whether LTP
 version_two_cookies: "yes"                                # Specifies whether LTPA version 2 cookies (LtpaToken2) are used. Valid value is "yes" or "no".
 ltpa_keyfile_password: "'{{ '{{' }} ltpa_pwd {{ '}}' }}'" # Password for the key file that is used to encrypt LTPA cookie data.
 ltpa_keyfile: "ltpafile.key"                              # Location of the key file that is used to encrypt the LTPA cookie data.
-client_ip_http: "no"                                      # Specifies whether to insert the IP address of the incoming request into an HTTP header for transmission to the junctioned Web server. Valid value is "yes" or "no".
 authz_rules: "yes"                                        # Specifies whether to allow denied requests and failure reason information from authorization rules to be sent in the Boolean Rule header (AM_AZN_FAILURE) across the junction. Valid value is "yes" or "no".
 delegation_support: "yes"                                 # This option is valid only with junctions that were created with the type of ssl or sslproxy. Indicates single sign-on from a front-end Reverse Proxy server to a back-end Reverse Proxy server.
 http2_junction: "no"                                      # Specifies whether the junction supports the HTTP/2 protocol. By default, junctions do not support the HTTP/2 protocol. A valid value is "yes" or "no".
