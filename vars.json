@@ -1,0 +1,27 @@
+{
+  "mapping_table": {
+    "NAME": "junction_point",
+    "JUCTYPE": "junction_type",
+    "TRANSPARENTPATH": "transparent_path_junction",
+    "STATEFUL": "stateful_junction",
+    "BASICAUTH": "basic_auth_mode",
+    "HARDLIMIT": "junction_hard_limit",
+    "SOFTLIMIT": "junction_soft_limit",
+    "SESSIONCOOKIE": "insert_session_cookies",
+    "REQUESTENCODING": "request_encoding",
+    "TFIMJCTSSO": "tfim_sso",
+    "MUTAUTHBA": "enable_basic_auth",
+    "MUTAUTHBAUP": "username+password",
+    "MUTAUTHCERT": "mutual_auth",
+    "MUTAUTHCERTLABEL": "key_label",
+    "CLIENTID": "remote_http_header",
+    "HOST": "servers.server_hostname",
+    "VIRTHOSTNM": "servers.virtual_hostname",
+    "PORT": "servers.server_port",
+    "SERVERDN": "servers.server_dn",
+    "URLQC": "servers.query_contents",
+    "LOCALADDRESS": "servers.local_ip",
+    "UUID": "servers.server_uuid"
+  }
+}
+
