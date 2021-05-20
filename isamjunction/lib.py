@@ -70,6 +70,7 @@ def f_processJunction(junctionfile):
     base64_message = junctionfile[junctionfile.rfind('/') + 1:junctionfile.rfind('.')]
     if base64_message == 'Lw==':
         #skip this, this is the local junction
+        print("SKIP LOCAL JUNCTION")
         return
     junction_name = decodeBase64(base64_message)
 
@@ -86,9 +87,9 @@ def f_processJunction(junctionfile):
         doc = xmltodict.parse(fd.read())
         fd.close()
 
-    for item in doc.items():
-        print(item)
-        print("\n")
+    #for item in doc.items():
+    #    print(item)
+    #    print("\n")
 
     # open a file for writing
     outfilename = tempfile.gettempdir() + junction_name + ".yaml"
@@ -101,9 +102,7 @@ def f_processJunction(junctionfile):
         #print('Number of elements: ' + str(len(junction)))
         isamservers = []
         for junctionvars in junction[1]:
-            print(junctionvars)
             jsonvars = mapping_table.get(junctionvars)
-            print(jsonvars)
             # return an object
             if jsonvars is not None:
                 jsonvarn = jsonvars.get('name')
@@ -116,7 +115,7 @@ def f_processJunction(junctionfile):
                 if jsonvarn.startswith("servers."):
                     isamservers = f_servers(isamservers, 0, jsonvarn[jsonvarn.rfind(".") + 1:],
                                             junction[1][junctionvars])
-                elif junctionvars == 'VIRTUALHOSTJCT":
+                elif junctionvars == 'VIRTUALHOSTJCT':
                     #add virtual_hostname
                     outf.write("virtual_hostname: " + junction[1].get('VIRTHOSTNM') + "\n")
                 elif junctionvars == 'CLIENTID':
