@@ -17,8 +17,6 @@ from tkinter import filedialog
 root = tkinter.Tk()
 root.withdraw()
 
-from docopt import docopt
-
 def main():
     junctiondir = ''
     args = docopt(__doc__)
