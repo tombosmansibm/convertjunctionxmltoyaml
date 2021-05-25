@@ -11,10 +11,17 @@ It requires Python 3.x
      
 install the prerequisites (in a virtual env)
 
-run
+run headless
+
+    cd <directory>
+    isamjunction/main.py --junctiondir=<directory to junctions>
+    
+
+run with prompt
    
     cd <directory>
     isamjunction/main.py
+
 
 select the "junctions directory"
 
