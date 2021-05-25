@@ -4,9 +4,9 @@ Extract the webseal-config.zip file you obtained by exporting the junction confi
 We need the "junctions" directory.
 
 
-This is only tested on Linux.
+This is tested on Linux and Windows.
 
-It requires Python 3.x
+It requires Python 3.6+
 
      
 install the prerequisites (in a virtual env)
