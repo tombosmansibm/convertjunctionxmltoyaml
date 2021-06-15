@@ -11,7 +11,7 @@ mapping_table = {
     "TRANSPARENTPATH": {"name": "transparent_path_junction", "boolean": True},
     "VIRTUALHOSTJCT": {"name": "virtual_hostname"},
     "STATEFUL": {"name": "stateful_junction", "boolean": True},
-    "BASICAUTH": {"name": "basic_auth_mode", "boolean": True},
+    "BASICAUTH": {"name": "basic_auth_mode"},
     "HARDLIMIT": {"name": "junction_hard_limit"},
     "SOFTLIMIT": {"name": "junction_soft_limit"},
     "SESSIONCOOKIE": {"name": "insert_session_cookies", "boolean": True},
