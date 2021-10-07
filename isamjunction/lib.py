@@ -178,13 +178,14 @@ def f_processJunction(junctionfile):
                 elif junctionvars == "HARDLIMIT" or junctionvars == "SOFTLIMIT":
                     #0 - using global value
                     if junction[1][junctionsvars] == "0":
-                       outf.write(jsonvarn + ": 0 - using global value\n")
+                       #outf.write(jsonvarn + ": 0 - using global value\n")
+                       print("002. Skipping " + junctionvars + " (default)")
                     else:
                        outf.write(jsonvarn + ": " + junction[1][junctionvars] + "\n")
 
                 elif jsonvarsinglevalue is not None and jsonvarsinglevalue:
                     # variables that are just present, and hence are True
-                    outf.write(jsonvarn + ": yes\n")
+                    outf.write(jsonvarn + ": 'yes'\n")
                 else:
                     if junction[1][junctionvars] is not None:
                         print(junctionvars + ": " + junction[1][junctionvars])
