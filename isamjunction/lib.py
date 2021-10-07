@@ -125,9 +125,12 @@ def f_processJunction(junctionfile):
                 elif junctionvars == 'SCRIPTCOOKIE':
                     outf.write(jsonvarn + ": yes\n")
                     #write out the type.  junction_cookie_javascript_block
+                    # trailer, inhead, onfocus, xhtml10
                     for k in junction[1]:
                         if k.startswith('SCRIPTCOOKIE'):
                             cookieparam = k.replace('SCRIPTCOOKIE','')
+                            if cookieparam.lower() == "head":
+                                outf.write("junction_cookie_javascript_block: inhead\n")
                             if cookieparam != '':
                                 outf.write("junction_cookie_javascript_block: " + cookieparam.lower() + "\n")
                 elif junctionvars == 'CLIENTID':
@@ -172,6 +175,13 @@ def f_processJunction(junctionfile):
                     print("username:" + theuser + ", password: "+thepw)
                     outf.write("username: " + theuser + "\n")
                     outf.write("password: " + thepw.strip() + "\n")
+                elif junctionvars == "HARDLIMIT" or junctionvars == "SOFTLIMIT":
+                    #0 - using global value
+                    if junction[1][junctionsvars] == "0":
+                       outf.write(jsonvarn + ": 0 - using global value\n")
+                    else:
+                       outf.write(jsonvarn + ": " + junction[1][junctionvars] + "\n")
+
                 elif jsonvarsinglevalue is not None and jsonvarsinglevalue:
                     # variables that are just present, and hence are True
                     outf.write(jsonvarn + ": yes\n")
