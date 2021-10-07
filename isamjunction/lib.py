@@ -164,7 +164,7 @@ def f_processJunction(junctionfile):
                             elif val == 'gr':
                                 outf.write('  - "iv-groups"\n')
                             elif val == 'cr':
-                                outf.write('  - "iv-cred"\n')
+                                outf.write('  - "iv-creds"\n')
                 elif junctionvars =='MUTAUTHBAUP':
                     # extract username/password
                     usernamepassword = decodeBase64(junction[1][junctionvars], "utf-8")
