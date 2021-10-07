@@ -38,7 +38,8 @@ mapping_table = {
     "LOCALADDRESS": {"name": "servers.local_ip"},
     "UUID": {"name": "servers.server_uuid"},
     "CASEINS": {"name": "servers.case_sensitive_url", "boolean": True},
-    "WIN32SUP": {"name": "servers.windows_style_url", "boolean": True}
+    "WIN32SUP": {"name": "servers.windows_style_url", "boolean": True},
+    "PRIORITY": {"name": "servers.priority"}
 }
 
 #functions
@@ -177,7 +178,7 @@ def f_processJunction(junctionfile):
                     outf.write("password: " + thepw.strip() + "\n")
                 elif junctionvars == "HARDLIMIT" or junctionvars == "SOFTLIMIT":
                     #0 - using global value
-                    if junction[1][junctionsvars] == "0":
+                    if junction[1][junctionvars] == "0":
                        #outf.write(jsonvarn + ": 0 - using global value\n")
                        print("002. Skipping " + junctionvars + " (default)")
                     else:
