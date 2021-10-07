@@ -3,6 +3,7 @@ Usage
 Extract the webseal-config.zip file you obtained by exporting the junction configuration.
 We need the "junctions" directory.
 
+Alternatively, you can also get a snapshot, this makes more sense if you have a lot of instances to process.
 
 This is tested on Linux and Windows.
 
