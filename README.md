@@ -6,7 +6,7 @@ We need the "junctions" directory.
 Alternatively, you can also get a snapshot, this makes more sense if you have a lot of instances to process.
 
 
-The configuration directory can be found under /var/pdweb/<name of instance>/server-root/jct
+The configuration directory can be found under /var/pdweb/{name of instance}/server-root/jct
 
 
 This is tested on Linux and Windows.
