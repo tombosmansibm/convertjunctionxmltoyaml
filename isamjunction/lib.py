@@ -39,7 +39,10 @@ mapping_table = {
     "UUID": {"name": "servers.server_uuid"},
     "CASEINS": {"name": "servers.case_sensitive_url", "boolean": True},
     "WIN32SUP": {"name": "servers.windows_style_url", "boolean": True},
-    "PRIORITY": {"name": "servers.priority"}
+    "PRIORITY": {"name": "servers.priority"},
+    "LTPAKEYFILE": {"name": "ltpa_keyfile"},
+    "LTPAKEYFILEPASSWD": {"name": "ltpa_keyfile_password"},
+    "LTPAVERSION2": {"name": "version_two_cookies", "boolean": True}
 }
 
 #functions
@@ -183,7 +186,11 @@ def f_processJunction(junctionfile):
                        print("002. Skipping " + junctionvars + " (default)")
                     else:
                        outf.write(jsonvarn + ": " + junction[1][junctionvars] + "\n")
-
+                elif junctionvars == "LTPAKEYFILE":
+                    outf.write("insert_ltpa_cookies: 'yes'\n")
+                    if junction[1][junctionvars] is not None:
+                        print(junctionvars + ": " + junction[1][junctionvars])
+                        outf.write(jsonvarn + ": " + junction[1][junctionvars] + "\n")
                 elif jsonvarsinglevalue is not None and jsonvarsinglevalue:
                     # variables that are just present, and hence are True
                     outf.write(jsonvarn + ": 'yes'\n")
