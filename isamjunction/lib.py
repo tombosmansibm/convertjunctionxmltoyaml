@@ -216,7 +216,7 @@ def f_processJunction(junctionfile):
 
     outf = open(outfilename, "w", encoding='iso-8859-1')
     _tmpYamlObject = writeVars(yjunction_name, doc)
-    if _tmpYamlObject != None:
+    if _tmpYamlObject is not None:
          outf.write(yaml.dump(_tmpYamlObject[yjunction_name], default_style=None, default_flow_style=False, sort_keys=False,
                          explicit_start=True))
     outf.close()
