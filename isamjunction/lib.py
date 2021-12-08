@@ -47,13 +47,8 @@ mapping_table = {
 }
 
 #functions
-def writeVars(junction_name, doc):
-    print("NAME: " + junction_name)
-    junction_name = junction_name.replace('.','_')
-    junction_name = junction_name.replace('-','_')
-    junction_name = junction_name.replace('/','')
-    junction_name = "junction_"+junction_name
-    yamlObject = {junction_name: {}}
+def writeVars(_junction_name, doc):
+    yamlObject = {_junction_name: {}}
 
     for junction in doc.items():
         # translate to a json/yaml object
@@ -76,19 +71,19 @@ def writeVars(junction_name, doc):
                                             junction[1][junctionvars])
                 elif junctionvars == 'VIRTUALHOSTJCT':
                     #add virtual_hostname
-                    yamlObject[junction_name]["virtual_hostname"] = junction[1].get('VIRTHOSTNM')
+                    yamlObject[_junction_name]["virtual_hostname"] = junction[1].get('VIRTHOSTNM')
 
                 elif junctionvars == 'SCRIPTCOOKIE':
-                    yamlObject[junction_name][jsonvarn] = 'yes'
+                    yamlObject[_junction_name][jsonvarn] = 'yes'
                     #write out the type.  junction_cookie_javascript_block
                     # trailer, inhead, onfocus, xhtml10
                     for k in junction[1]:
                         if k.startswith('SCRIPTCOOKIE'):
                             cookieparam = k.replace('SCRIPTCOOKIE','')
                             if cookieparam.lower() == "head":
-                                yamlObject[junction_name]["junction_cookie_javascript_block"] = "inhead"
+                                yamlObject[_junction_name]["junction_cookie_javascript_block"] = "inhead"
                             if cookieparam != '':
-                                yamlObject[junction_name]["junction_cookie_javascript_block"] = cookieparam.lower()
+                                yamlObject[_junction_name]["junction_cookie_javascript_block"] = cookieparam.lower()
                 elif junctionvars == 'CLIENTID':
                     #insert_all
                     #insert_pass_usgrcr
@@ -118,7 +113,7 @@ def writeVars(junction_name, doc):
                                 _clientid_options.append("iv-groups")
                             elif val == 'cr':
                                 _clientid_options.append("iv-creds")
-                    yamlObject[junction_name][jsonvarn] = _clientid_options
+                    yamlObject[_junction_name][jsonvarn] = _clientid_options
                 elif junctionvars =='MUTAUTHBAUP':
                     # extract username/password
                     usernamepassword = decodeBase64(junction[1][junctionvars], "utf-8")
@@ -127,36 +122,36 @@ def writeVars(junction_name, doc):
                     theuser = usernamepassword.split("\n")[0]
                     thepw = usernamepassword.split("\n")[1][:-1]  #this is to remove the strange ^ Q character
                     print("username:" + theuser + ", password: "+thepw)
-                    yamlObject[junction_name]["username"] = theuser
-                    yamlObject[junction_name]["password"] = thepw.strip()
+                    yamlObject[_junction_name]["username"] = theuser
+                    yamlObject[_junction_name]["password"] = thepw.strip()
                 elif junctionvars == "HARDLIMIT" or junctionvars == "SOFTLIMIT":
                     #0 - using global value
                     if junction[1][junctionvars] == "0":
                        #outf.write(jsonvarn + ": 0 - using global value\n")
                        print("002. Skipping " + junctionvars + " (default)")
                     else:
-                      yamlObject[junction_name][jsonvarn] = junction[1][junctionvars]
+                      yamlObject[_junction_name][jsonvarn] = junction[1][junctionvars]
                 elif junctionvars == "LTPAKEYFILE":
-                    yamlObject[junction_name]["insert_ltpa_cookies"] = "yes"
+                    yamlObject[_junction_name]["insert_ltpa_cookies"] = "yes"
                     if junction[1][junctionvars] is not None:
                         print(junctionvars + ": " + junction[1][junctionvars])
-                        yamlObject[junction_name][jsonvarn] = junction[1][junctionvars]
+                        yamlObject[_junction_name][jsonvarn] = junction[1][junctionvars]
 
                 elif jsonvarsinglevalue is not None and jsonvarsinglevalue:
                     # variables that are just present, and hence are True
-                    yamlObject[junction_name][jsonvarn] = "yes"
+                    yamlObject[_junction_name][jsonvarn] = "yes"
 
                 else:
                     if junction[1][junctionvars] is not None:
                         print(junctionvars + ": " + junction[1][junctionvars])
-                        yamlObject[junction_name][jsonvarn] = junction[1][junctionvars]
+                        yamlObject[_junction_name][jsonvarn] = junction[1][junctionvars]
                     else:
                         print("002. Skipping " + junctionvars)
             else:
                 print("001. Skipping " + junctionvars)
     # write out servers
     print(isamservers)
-    yamlObject[junction_name]["servers"] = isamservers
+    yamlObject[_junction_name]["servers"] = isamservers
     return yamlObject
 
 def f_servers(_isamservers=[], _index=0, _isamkey=None, _isamvalue=None):
@@ -208,135 +203,38 @@ def f_processJunction(junctionfile):
         doc = xmltodict.parse(fd.read())
         fd.close()
 
-    #for item in doc.items():
-    #    print(item)
-    #    print("\n")
+    # cleanup a junction name for use in yaml
+    yjunction_name = junction_name.replace('.','_')
+    yjunction_name = yjunction_name.replace('-','_')
+    yjunction_name = yjunction_name.replace('/','')
+    if yjunction_name == '':
+        yjunction_name = "root"
+    yjunction_name = "junction_"+yjunction_name
 
     # open a file for writing
     outfilename = tempfile.gettempdir() + junction_name + ".yaml"
-
     outyaml = tempfile.gettempdir() + junction_name + "_var.yaml"
+
     outy = open(outyaml, "w", encoding='iso-8859-1')
-    outy.writelines("---\n")
-
-
-    _tmpYamlObject = writeVars(junction_name, doc)
-    outy.write(yaml.dump(_tmpYamlObject, default_style=None, default_flow_style=False, sort_keys=False))
+    _tmpYamlObject = writeVars(yjunction_name, doc)
+    outy.write(yaml.dump(_tmpYamlObject, default_style=None, default_flow_style=False, sort_keys=False, explicit_start=True))
     outy.close()
-    print("Written vars file")
 
     outf = open(outfilename, "w", encoding='iso-8859-1')
-    outf.writelines("---\n")
-    for junction in doc.items():
-        # translate to a json/yaml object
-        # find the item that's in the junction file, and map it to an item in config
-        #print('Number of elements: ' + str(len(junction)))
-        isamservers = []
-        for junctionvars in junction[1]:
-            jsonvars = mapping_table.get(junctionvars)
-            # return an object
-            if jsonvars is not None:
-                jsonvarn = jsonvars.get('name')
-                jsonvarsinglevalue = jsonvars.get('boolean')
-            else:
-                jsonvarn = None
-                jsonvarsinglevalue = False
-            #if jsonvarn is not None and junction[1][junctionvars] is not None:
-            if jsonvarn is not None:
-                if jsonvarn.startswith("servers."):
-                    isamservers = f_servers(isamservers, 0, jsonvarn[jsonvarn.rfind(".") + 1:],
-                                            junction[1][junctionvars])
-                elif junctionvars == 'VIRTUALHOSTJCT':
-                    #add virtual_hostname
-                    outf.write("virtual_hostname: " + junction[1].get('VIRTHOSTNM') + "\n")
-                elif junctionvars == 'SCRIPTCOOKIE':
-                    outf.write(jsonvarn + ": yes\n")
-                    #write out the type.  junction_cookie_javascript_block
-                    # trailer, inhead, onfocus, xhtml10
-                    for k in junction[1]:
-                        if k.startswith('SCRIPTCOOKIE'):
-                            cookieparam = k.replace('SCRIPTCOOKIE','')
-                            if cookieparam.lower() == "head":
-                                outf.write("junction_cookie_javascript_block: inhead\n")
-                            if cookieparam != '':
-                                outf.write("junction_cookie_javascript_block: " + cookieparam.lower() + "\n")
-                elif junctionvars == 'CLIENTID':
-                    #insert_all
-                    #insert_pass_usgrcr
-                    #do not insert
-                    # also, user and groups are seperate entries
-                    if junction[1][junctionvars] == 'do not insert':
-                        print(">don't insert header")
-                    elif junction[1][junctionvars] == 'user':
-                        outf.write(jsonvarn+":\n")
-                        outf.write("  - iv_user\n")
-                    elif junction[1][junctionvars] == 'groups':
-                        outf.write(jsonvarn+":\n")
-                        outf.write("  - iv_groups\n")
-                    elif junction[1][junctionvars] == 'insert_all':
-                        outf.write(jsonvarn+":\n")
-                        outf.write("  - all\n")
-                    else:
-                        #look at the end of the string, it indicates user, groups, iv-user-l and/or cred
-                        cred = junction[1][junctionvars].split("_")[-1]
-                        #print("> cred:" +cred)
-                        cred = [cred[i:i + 2] for i in range(0, len(cred), 2)]
-                        print("> cred:" + ",".join(cred))
-                        outf.write(jsonvarn + ":\n")
-                        for val in cred:
-                            if val == 'us':
-                                outf.write('  - "iv-user"\n')
-                            elif val == 'ln':
-                                outf.write('  - "iv-user-l"\n')
-                            elif val == 'gr':
-                                outf.write('  - "iv-groups"\n')
-                            elif val == 'cr':
-                                outf.write('  - "iv-creds"\n')
-                elif junctionvars =='MUTAUTHBAUP':
-                    # extract username/password
-                    usernamepassword = decodeBase64(junction[1][junctionvars], "utf-8")
-                    #usernamepassword = junction[1][junctionvars].decode('base64')
-                    print(usernamepassword)
-                    theuser = usernamepassword.split("\n")[0]
-                    thepw = usernamepassword.split("\n")[1][:-1]  #this is to remove the strange ^ Q character
-                    print("username:" + theuser + ", password: "+thepw)
-                    outf.write("username: " + theuser + "\n")
-                    outf.write("password: " + thepw.strip() + "\n")
-                elif junctionvars == "HARDLIMIT" or junctionvars == "SOFTLIMIT":
-                    #0 - using global value
-                    if junction[1][junctionvars] == "0":
-                       #outf.write(jsonvarn + ": 0 - using global value\n")
-                       print("002. Skipping " + junctionvars + " (default)")
-                    else:
-                       outf.write(jsonvarn + ": " + junction[1][junctionvars] + "\n")
-                elif junctionvars == "LTPAKEYFILE":
-                    outf.write("insert_ltpa_cookies: 'yes'\n")
-                    if junction[1][junctionvars] is not None:
-                        print(junctionvars + ": " + junction[1][junctionvars])
-                        outf.write(jsonvarn + ": " + junction[1][junctionvars] + "\n")
-                elif jsonvarsinglevalue is not None and jsonvarsinglevalue:
-                    # variables that are just present, and hence are True
-                    outf.write(jsonvarn + ": 'yes'\n")
-                else:
-                    if junction[1][junctionvars] is not None:
-                        print(junctionvars + ": " + junction[1][junctionvars])
-                        outf.write(jsonvarn + ": " + junction[1][junctionvars] + "\n")
-                    else:
-                        print("002. Skipping " + junctionvars)
-            else:
-                print("001. Skipping " + junctionvars)
-
-    # write out servers
-    print(isamservers)
-    outf.write("servers:\n")
-    for r in isamservers:
-        outf.write("  -\n")
-        for ser in r:
-            outf.write("    ")
-            outf.write(ser + ": " + r[ser])
-            outf.write("\n")
+    outf.write(yaml.dump(_tmpYamlObject[yjunction_name], default_style=None, default_flow_style=False, sort_keys=False, explicit_start=True))
     outf.close()
-
     #print
     print("\n\nWRITTEN TO: " + outfilename)
-    print("\n\nVARS FILE WRITTEN TO: " + outyaml)
+    print("\nVARS FILE WRITTEN TO: " + outyaml)
+
+    return yjunction_name
+
+def f_createSampleJunctions(_junction_names):
+    outfilename = tempfile.gettempdir() + "/junctions.yaml"
+    outf = open(outfilename, "w", encoding='iso-8859-1')
+
+    _tmpYamlO = {"junctions": list(map(lambda x:'{{ '+x+' }}',_junction_names))}
+
+    outf.write(yaml.dump(_tmpYamlO, default_style=None, default_flow_style=False, sort_keys=False, explicit_start=True))
+    outf.close()
+    print("\nJUNCTIONS OVERVIEW: " + outfilename)
