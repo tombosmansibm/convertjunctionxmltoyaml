@@ -30,13 +30,18 @@ run with prompt
 
 select the "junctions directory"
 
-The output is separate yaml files you can use in plays that are built for https://github.com/IBM-Security/isam-ansible-collection
+There's 2 flavors:
+- <junction_name>.yml
+- junctions.yml
+
+The 2nd output is 1 yaml file you can use in plays that are built for https://github.com/IBM-Security/isam-ansible-collection
 
 Specifically:
  https://github.com/IBM-Security/isam-ansible-collection/tree/master/roles/web/configure_reverseproxy_junctions
 
+
+The first format are individual files , that need specific care to be deployed, but they match the xml files 1-to-1
+
 To do
 -------
-- so far , the output yaml file is not tested yet (not deployed yet)
 - logic for the http/https ports needs to be verified
-- most fields are covered, but still some missing (eg. LTPA)

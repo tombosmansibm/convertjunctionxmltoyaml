@@ -31,13 +31,15 @@ def main():
 
     if junctiondir is not None and len(junctiondir) > 0:
         _junction_vars = []
+        _alljunctions = {}
         for junctionfilepath in os.listdir(junctiondir):
             print("\n\nOpening file " + junctiondir + "/" + junctionfilepath)
-            _junction_vars.append(f_processJunction(junctiondir+"/"+junctionfilepath))
-
+            _tmpJName, _tmpYaml = f_processJunction(junctiondir+"/"+junctionfilepath)
+            _junction_vars.append(_tmpJName)
+            _alljunctions.update(_tmpYaml)
         # create a junctions file that ties everything together
         # the loop removes empty elements from the list
-        f_createSampleJunctions([x for x in _junction_vars if x])
+        f_createSampleJunctions([x for x in _junction_vars if x], _alljunctions)
 
 
 if __name__=='__main__':

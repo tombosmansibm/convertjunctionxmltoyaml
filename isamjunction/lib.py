@@ -187,7 +187,7 @@ def f_processJunction(junctionfile):
     if base64_message == 'Lw==':
         #skip this, this is the local junction
         print("SKIP LOCAL JUNCTION")
-        return
+        return "", {}
     junction_name = decodeBase64(base64_message)
 
     if not junction_name.startswith("/"):
@@ -213,30 +213,28 @@ def f_processJunction(junctionfile):
 
     # open a file for writing
     outfilename = tempfile.gettempdir() + junction_name + ".yaml"
-    outyaml = tempfile.gettempdir() + junction_name + "_vars.yaml"
-
-    outy = open(outyaml, "w", encoding='iso-8859-1')
-    _tmpYamlObject = writeVars(yjunction_name, doc)
-    outy.write(yaml.dump(_tmpYamlObject, default_style=None, default_flow_style=False, sort_keys=False, explicit_start=True))
-    outy.close()
 
     outf = open(outfilename, "w", encoding='iso-8859-1')
-    outf.write(yaml.dump(_tmpYamlObject[yjunction_name], default_style=None, default_flow_style=False, sort_keys=False, explicit_start=True))
+    _tmpYamlObject = writeVars(yjunction_name, doc)
+    if _tmpYamlObject != None:
+         outf.write(yaml.dump(_tmpYamlObject[yjunction_name], default_style=None, default_flow_style=False, sort_keys=False,
+                         explicit_start=True))
     outf.close()
     #print
     print("\nWRITTEN TO: " + outfilename)
-    print("VARS FILE WRITTEN TO: " + outyaml)
 
-    return yjunction_name
+    return yjunction_name, _tmpYamlObject
 
-def f_createSampleJunctions(_junction_names):
+def f_createSampleJunctions(_junction_names, actual_junctions):
     outfilename = tempfile.gettempdir() + "/junctions.yaml"
     outf = open(outfilename, "w", encoding='iso-8859-1')
 
     _tmpYamlO = {"junctions": list(map(lambda x:'{{ '+x+' }}',_junction_names))}
 
     outf.write(yaml.dump(_tmpYamlO, default_style=None, default_flow_style=False, sort_keys=False, explicit_start=True))
+    outf.write('\n')
+    outf.write(yaml.dump(actual_junctions, default_style=None, default_flow_style=False, sort_keys=False, explicit_start=False))
+
     outf.close()
     print("\nJUNCTIONS OVERVIEW: " + outfilename)
-    print("this refers the junctions created in the individual ..._vars.yaml files")
-    print("Put this file and the .._vars.yml files in your Ansible inventory and ibm.isam collection can handle it")
+    print("this file contains all junctions in 1 file, directly usable in IBM-Security/isam-ansible-collection")
