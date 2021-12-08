@@ -2,7 +2,7 @@
 """
 Usage:  main.py
         main.py [--junctiondir=JUNCTIONDIR]
-
+        main.py [--format=JUNCTIONDIR]
 Options:
   --junctiondir=DIR         directory that contains the junctions
   -h --help     Show this screen.
