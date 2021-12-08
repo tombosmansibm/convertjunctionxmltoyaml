@@ -224,8 +224,8 @@ def f_processJunction(junctionfile):
     outf.write(yaml.dump(_tmpYamlObject[yjunction_name], default_style=None, default_flow_style=False, sort_keys=False, explicit_start=True))
     outf.close()
     #print
-    print("\n\nWRITTEN TO: " + outfilename)
-    print("\nVARS FILE WRITTEN TO: " + outyaml)
+    print("\nWRITTEN TO: " + outfilename)
+    print("VARS FILE WRITTEN TO: " + outyaml)
 
     return yjunction_name
 
@@ -238,5 +238,5 @@ def f_createSampleJunctions(_junction_names):
     outf.write(yaml.dump(_tmpYamlO, default_style=None, default_flow_style=False, sort_keys=False, explicit_start=True))
     outf.close()
     print("\nJUNCTIONS OVERVIEW: " + outfilename)
-    print("\nthis refers the junctions created in the individual ..._vars.yaml files")
-    print("\nPut this file and the .._vars.yml files in your Ansible inventory and ibm.isam collection can handle it")
+    print("this refers the junctions created in the individual ..._vars.yaml files")
+    print("Put this file and the .._vars.yml files in your Ansible inventory and ibm.isam collection can handle it")
