@@ -149,6 +149,12 @@ def writeVars(_junction_name, doc):
                         print("002. Skipping " + junctionvars)
             else:
                 print("001. Skipping " + junctionvars)
+
+    #Additional filters
+    if 'enable_basic_auth' in yamlObject[_junction_name]:
+        #basic_auth_mode: filter and  enable_basic_auth: are incompatible
+        yamlObject[_junction_name].pop('basic_auth_mode', None)
+
     # write out servers
     print(isamservers)
     yamlObject[_junction_name]["servers"] = isamservers
