@@ -43,7 +43,8 @@ mapping_table = {
     "PRIORITY": {"name": "servers.priority"},
     "LTPAKEYFILE": {"name": "ltpa_keyfile"},
     "LTPAKEYFILEPASSWD": {"name": "ltpa_keyfile_password"},
-    "LTPAVERSION2": {"name": "version_two_cookies", "boolean": True}
+    "LTPAVERSION2": {"name": "version_two_cookies", "boolean": True},
+    "REPLICASET": {"name": "sms_environment"}
 }
 
 #functions
