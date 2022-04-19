@@ -80,10 +80,11 @@ def writeVars(_junction_name, doc):
                     # trailer, inhead, onfocus, xhtml10
                     for k in junction[1]:
                         if k.startswith('SCRIPTCOOKIE'):
+                            print("processing scriptcookie:  " + k)
                             cookieparam = k.replace('SCRIPTCOOKIE','')
                             if cookieparam.lower() == "head":
                                 yamlObject[_junction_name]["junction_cookie_javascript_block"] = "inhead"
-                            if cookieparam != '':
+                            elif cookieparam != '':
                                 yamlObject[_junction_name]["junction_cookie_javascript_block"] = cookieparam.lower()
                 elif junctionvars == 'CLIENTID':
                     #insert_all
